@@ -104,7 +104,7 @@
 									"<button onclick='addWhip()'>Whip</button>"+
 								"</div>";
 			buttons.innerHTML += "<div class = 'container'>"+
-									"<button onclick='submitOrder()'>Submit Order </button>"+
+									"<button onclick='submitOrder()'>Confirm Order</button>"+
 								"</div>";
 			console.log("buttons populated");
 		}
@@ -113,9 +113,9 @@
 		function remCondiment(condiment){
 			var condimentList = document.getElementById("condimentList");
 			var items = condimentList.getElementsByTagName("li");
-			console.log(condiment);
+			console.log("condiment to be removed" + condiment);
 			for(var i = 0; i < items.length; i++){
-				console.log(items[i].textContent);
+				console.log("current condiment: " + items[i].textContent);
 				if(items[i].textContent === condiment){
 					condimentList.removeChild(items[i]);
 					console.log(items[i]);
@@ -166,71 +166,43 @@
 			if(!document.getElementById("milkButton")){
 				var condimentList = document.getElementById("condimentList");
 				var listItem = document.createElement("li");
-				var button = document.createElement("button");
-				button.addEventListener("click", remCondiment("Milk"));
-				button.textContent = "Milk";
-			
-				button.id = "milkButton";
-				button.classList.add("button2");
-				listItem.appendChild(button);
+
+				listItem.innerHTML = "<button class = 'button2' onclick = remCondiment('Milk')>Milk</button>"
+				
 				condimentList.appendChild(listItem);
-				milkCnt++;
-			}else{
-				milkCnt++;
 			}
 		}
 
 		function addMocha(){	
 			if(!document.getElementById("mochaButton")){
-				var condimentList = document.getElementById("condimentList");
-		
+				var condimentList = document.getElementById("condimentList");	
 				var listItem = document.createElement("li");
-				var button = document.createElement("button");
-				button.addEventListener("click", remCondiment("Mocha"));
-				button.textContent = "Mocha";
-				button.id = "mochaButton";
-				button.classList.add("button2");
-				listItem.appendChild(button);
+				
+				listItem.innerHTML = "<button class = 'button2' onclick = remCondiment('Mocha')>Mocha</button>"
+				
 				condimentList.appendChild(listItem);
-				mochaCnt++;
-			}else{
-				mochaCnt++;
 			}
 		}
 
 		function addSoy(){
 			if(!document.getElementById("soyButton")){
 				var condimentList = document.getElementById("condimentList");
-			
 				var listItem = document.createElement("li");
-				var button = document.createElement("button");
-				button.addEventListener("click", remCondiment("Soy"));
-				button.id = "soyButton";
-				button.textContent = "Soy";
-				button.classList.add("button2");
-				listItem.appendChild(button);
+				
+				listItem.innerHTML = "<button class = 'button2' onclick = remCondiment('Soy')>Soy</button>"
+				
 				condimentList.appendChild(listItem);
-				soyCnt++;
-			}else{
-				soyCnt++;
 			}
 		}
 
 		function addWhip(){
 			if(!document.getElementById("whipButton")){
 				var condimentList = document.getElementById("condimentList");
-			
 				var listItem = document.createElement("li");
-				var button = document.createElement("button");
-				button.addEventListener("click", remCondiment("Whip"));
-				button.id = "whipButton";
-				button.textContent = "Whip";
-				button.classList.add("button2");
-				listItem.appendChild(button);
+								
+				listItem.innerHTML = "<button class = 'button2' onclick = remCondiment('Whip')>Whip</button>"
+				
 				condimentList.appendChild(listItem);
-				whipCnt++;
-			}else{
-				whipCnt++;
 			}
 		}
 
@@ -264,11 +236,11 @@
 				console.log(response);
 				message = "Something went wrong! Order data could not be saved.";
 		    }
-			
+			let order = JSON.stringify(orderData)	
 			var container = document.getElementById("container");
-			container.innerHTML = "<div> Order Placed: </div>";
+			container.innerHTML = "<div> Order Placed: \n</div>";
 			container.innerHTML += "<div> Order id: 24 </div>";
-			container.innerHTML += "<div>" + JSON.strigify(orderData) + "</div>";
+			container.innerHTML += "<div>" + coffeeType + " with " + condiments + " " + "</div>";
 			container.innerHTML += "<div> Total: $4.50 </div>";
 
 			
