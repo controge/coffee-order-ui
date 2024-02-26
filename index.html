@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            background-color: #c5b493;
+            margin : 0;
+            padding : 0;
+			font-family: 'Arial', sans-serif;
+        }
+		button{
+			font-size: 32px;
+            height: 140px;
+            width: 280px;
+            background-color: #d5c4a3;
+            margin-right: 50px;
+			margin-bottom: 50px;
+			border-radius: 5px;
+        }
+
+		.button2{
+			font-size: 16px;
+            height: 70px;
+            width: 140px;
+            background-color: #d5c4a3;
+            margin-right: 50px;
+			margin-bottom: 50px;
+			border-radius: 5px;
+        }
+		.ordercontainer{
+			justify-content: right;
+			text-align: right;
+			direction: rt1;
+			list-style-position:inside;
+			margin-right:50px;
+			padding: 10px;
+			border: 2px solid #ccc;
+		}
+		.container{
+			/*height: 700px;*/
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.sidebyside{
+			flex : 1;
+			padding : 10px;
+	}
+        .menu-link {
+            font-size: 32px;
+            margin-right: 20px; 
+        }
+    </style>
+    <title>Coffee Order</title>
+</head>
+<body>
+	<a style = "font-size: 32px;">Coffee Order</a>
+	<div id = 'container' class = "container">
+	<div id='buttons' class = "sidebyside">
+		<div class = "container">
+			<button onclick="startOrder()">Start Your Order Here</button>	
+		</div>
+	</div>
+	<div id = "coffeetype"class = "ordercontainer"></div>
+	<ul id ="condimentList" class = "ordercontainer"></ul>
+	</div>
+	
+	<script>
+		let milkCnt = 0, mochaCnt = 0, soyCnt = 0, whipCnt = 0;
+		let coffeeType = "unspecified";
+		let host = "http://localhost:8080";
+
+		function startOrder(){
+			var coffeeDiv = document.getElementById("coffeetype");
+			coffeeDiv.innerHTML = "";
+			var condimentsList = document.getElementById("condimentList");
+			condimentsList.innerHTML = "";
+			buttons.innerHTML = "<div class = 'container'>"+
+									"<a style = 'font-size: 32px; justify-content:center;'>Select the Beverage</a>"+
+								"</div>";
+			buttons.innerHTML += "<div class = 'container'>"+
+									"<button onclick='darkRoast()'>Dark Roast</button>"+
+									"<button onclick='espresso()'>Espresso</button>"+
+								"</div>";
+			buttons.innerHTML += "<div class = 'container'>"+
+									"<button onclick='houseBlend()'>House Blend</button>"+
+									"<button onclick='decaf()'>Decaf</button>"+
+								"</div>";	
+			console.log("buttons populated");
+		}
+
+		function showToppings(){
+			buttons.innerHTML = "<div class = 'container'>"+
+									"<a style = 'font-size: 32px; justify-content:center;'>Add the Condiments</a>"+
+								"</div>";
+			buttons.innerHTML += "<div class = 'container'>"+
+									"<button onclick='addMilk()'>Milk</button>"+
+									"<button onclick='addMocha()'>Mocha</button>"+
+								"</div>";
+			buttons.innerHTML += "<div class = 'container'>"+
+									"<button onclick='addSoy()'>Soy</button>"+
+									"<button onclick='addWhip()'>Whip</button>"+
+								"</div>";
+			buttons.innerHTML += "<div class = 'container'>"+
+									"<button onclick='submitOrder()'>Submit Order </button>"+
+								"</div>";
+			console.log("buttons populated");
+		}
+
+
+		function remCondiment(condiment){
+			var condimentList = document.getElementById("condimentList");
+			var items = condimentList.getElementsByTagName("li");
+			console.log(condiment);
+			for(var i = 0; i < items.length; i++){
+				console.log(items[i].textContent);
+				if(items[i].textContent === condiment){
+					condimentList.removeChild(items[i]);
+					console.log(items[i]);
+					break;
+				}
+			}
+		}
+		
+		//functions for drink selection
+		function darkRoast(){
+			var coffeeDiv = document.getElementById("coffeetype");
+			coffeeDiv.innerHTML = "<div>My Order: </div>";
+			coffeeDiv.innerHTML += "<button class = 'button2' onclick = 'startOrder()'>Dark Roast</button>";
+			coffeeType = "dark roast";
+			console.log("added dark roast");
+			showToppings();
+		}
+
+		function espresso(){
+			var coffeeDiv = document.getElementById("coffeetype");
+			coffeeDiv.innerHTML = "<div>My Order: </div>";
+			coffeeDiv.innerHTML += "<button class = 'button2' onclick = 'startOrder()'>Espresso</button>";
+			coffeeType = "espresso";
+			console.log("added espresso");
+			showToppings();
+		}
+
+		function houseBlend(){
+			var coffeeDiv = document.getElementById("coffeetype");
+			coffeeDiv.innerHTML = "<div>My Order: </div>";
+			coffeeDiv.innerHTML += "<button class = 'button2' onclick = 'startOrder()'>House Blend</button>";
+			coffeeType = "house blend";
+			console.log("added house blend");
+			showToppings();
+		}
+
+		function decaf(){
+			var coffeeDiv = document.getElementById("coffeetype");
+			coffeeDiv.innerHTML = "<div>My Order: </div>";
+			coffeeDiv.innerHTML += "<button class = 'button2' onclick = 'startOrder()'>Decaf</button>";
+			coffeeType = "decaf";
+			console.log("added decaf");
+			showToppings();
+		}
+		
+		//functions for adding condiments
+		function addMilk(){
+			if(!document.getElementById("milkButton")){
+				var condimentList = document.getElementById("condimentList");
+				var listItem = document.createElement("li");
+				var button = document.createElement("button");
+				button.addEventListener("click", remCondiment("Milk"));
+				button.textContent = "Milk";
+			
+				button.id = "milkButton";
+				button.classList.add("button2");
+				listItem.appendChild(button);
+				condimentList.appendChild(listItem);
+				milkCnt++;
+			}else{
+				milkCnt++;
+			}
+		}
+
+		function addMocha(){	
+			if(!document.getElementById("mochaButton")){
+				var condimentList = document.getElementById("condimentList");
+		
+				var listItem = document.createElement("li");
+				var button = document.createElement("button");
+				button.addEventListener("click", remCondiment("Mocha"));
+				button.textContent = "Mocha";
+				button.id = "mochaButton";
+				button.classList.add("button2");
+				listItem.appendChild(button);
+				condimentList.appendChild(listItem);
+				mochaCnt++;
+			}else{
+				mochaCnt++;
+			}
+		}
+
+		function addSoy(){
+			if(!document.getElementById("soyButton")){
+				var condimentList = document.getElementById("condimentList");
+			
+				var listItem = document.createElement("li");
+				var button = document.createElement("button");
+				button.addEventListener("click", remCondiment("Soy"));
+				button.id = "soyButton";
+				button.textContent = "Soy";
+				button.classList.add("button2");
+				listItem.appendChild(button);
+				condimentList.appendChild(listItem);
+				soyCnt++;
+			}else{
+				soyCnt++;
+			}
+		}
+
+		function addWhip(){
+			if(!document.getElementById("whipButton")){
+				var condimentList = document.getElementById("condimentList");
+			
+				var listItem = document.createElement("li");
+				var button = document.createElement("button");
+				button.addEventListener("click", remCondiment("Whip"));
+				button.id = "whipButton";
+				button.textContent = "Whip";
+				button.classList.add("button2");
+				listItem.appendChild(button);
+				condimentList.appendChild(listItem);
+				whipCnt++;
+			}else{
+				whipCnt++;
+			}
+		}
+
+		async function submitOrder(){
+			var condimentList = document.getElementById("condimentList");
+			var condiments = [];
+
+			for(var i = 0; i < condimentList.children.length; i++){
+				var condiment = condimentList.children[i].textContent;
+				condiments.push(condiment);
+			}
+
+			var orderData = {
+				beverage: coffeeType,
+				condiments: condiments
+			};
+
+            let request = {
+          		method: "POST",
+         	 	headers: {
+            		"Content-Type" : "application/json"
+          				},
+	    		body: JSON.stringify(orderData)
+        	};
+			console.log(orderData.beverage);
+			console.log(orderData.condiments);
+			let response = await fetch(host+"/orders", request);
+        	if(response.status == 200){    
+				message = "The order was added successfully!";
+		    }else{
+				console.log(response);
+				message = "Something went wrong! Order data could not be saved.";
+		    }
+			
+			var container = document.getElementById("container");
+			container.innerHTML = "<div> Order Placed: </div>";
+			container.innerHTML += "<div> Order id: 24 </div>";
+			container.innerHTML += "<div>" + JSON.strigify(orderData) + "</div>";
+			container.innerHTML += "<div> Total: $4.50 </div>";
+
+			
+		}
+	</script>
+</body>
+</html>
+
