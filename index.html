@@ -47,7 +47,7 @@
 		.sidebyside{
 			flex : 1;
 			padding : 10px;
-	}
+		}
         .menu-link {
             font-size: 32px;
             margin-right: 20px; 
@@ -63,14 +63,16 @@
 			<button onclick="startOrder()">Start Your Order Here</button>	
 		</div>
 	</div>
-	<div id = "coffeetype"class = "ordercontainer"></div>
-	<ul id ="condimentList" class = "ordercontainer"></ul>
+		<div id = "coffeetype"class = "ordercontainer"></div>
+		<ul id ="condimentList" class = "ordercontainer"></ul>
 	</div>
 	
 	<script>
+		//TODO: Change localhost port to 8081 for testing with Docker
+		//TODO: Change host to render.com backend.
 		let milkCnt = 0, mochaCnt = 0, soyCnt = 0, whipCnt = 0;
 		let coffeeType = "unspecified";
-		let host = "http://localhost:8080";
+		let host = "http://localhost:8081";
 
 		function startOrder(){
 			var coffeeDiv = document.getElementById("coffeetype");
@@ -215,7 +217,7 @@
 				condiments.push(condiment);
 			}
 
-			var orderData = {
+			let orderData = {
 				beverage: coffeeType,
 				condiments: condiments
 			};
@@ -236,13 +238,24 @@
 				console.log(response);
 				message = "Something went wrong! Order data could not be saved.";
 		    }
-			let order = JSON.stringify(orderData)	
-			var container = document.getElementById("container");
-			container.innerHTML = "<div> Order Placed: \n</div>";
-			container.innerHTML += "<div> Order id: 24 </div>";
-			container.innerHTML += "<div>" + coffeeType + " with " + condiments + " " + "</div>";
-			container.innerHTML += "<div> Total: $4.50 </div>";
-
+	
+			let data = await response.json();
+			console.log(data);
+			let orderHeader = document.createElement("li");
+			let orderNumberItem = document.createElement("li");
+			let orderDescriptionItem = document.createElement("li");
+			let orderTotalItem = document.createElement("li");
+			orderHeader.innerHTML = "<div style = 'font-size : 32px'> Order Placed: </div>"
+			orderNumberItem.innerHTML = "<div> Order Number:" + data.id + "</div>";
+			orderDescriptionItem.innerHTML = "<div>" + data.description + "</div>";
+			orderTotalItem.innerHTML = "<div> Total: " + data.cost + "</div>";
+			let container = document.getElementById("container");
+			container.innerHTML = "<ul id ='receipt' class = 'ordercontainer'></ul>";
+			var receipt = document.getElementById("receipt");
+			receipt.appendChild(orderHeader);
+			receipt.appendChild(orderNumberItem);
+			receipt.appendChild(orderDescriptionItem);
+			receipt.appendChild(orderTotalItem);
 			
 		}
 	</script>
