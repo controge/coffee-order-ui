@@ -52,11 +52,17 @@
             font-size: 32px;
             margin-right: 20px; 
         }
+		.right-justify{
+			text-align: right;
+		}
     </style>
     <title>Coffee Order</title>
 </head>
 <body>
 	<a style = "font-size: 32px;">Coffee Order</a>
+	<p class = "right-justify">
+		<a href="login.html" class = "menu-link">Login</a>
+		</p>
 	<div id = 'container' class = "container">
 	<div id='buttons' class = "sidebyside">
 		<div class = "container">
@@ -72,7 +78,7 @@
 		//TODO: Change host to render.com backend.
 		let milkCnt = 0, mochaCnt = 0, soyCnt = 0, whipCnt = 0;
 		let coffeeType = "unspecified";
-		let host = "https://coffeeorder-controge.onrender.com";
+		let host = getHost();
 
 		function startOrder(){
 			var coffeeDiv = document.getElementById("coffeetype");
